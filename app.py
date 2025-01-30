@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Retrieve OpenAI API Key
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
 ## langchain modules
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -47,8 +50,8 @@ def vectordb_from_file(pdf_file):
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
     chunks = splitter.split_documents(documents)
 
-    # Embedding chunks
-    embedding_model = OpenAIEmbeddings()
+    # Embedding chunks    
+    embedding_model = OpenAIEmbeddings(openai_api_key=openai_api_key)
 
     # Indexing in FAISS vector DB
     vector_db = FAISS.from_documents(chunks, embedding_model)
